@@ -1,0 +1,29 @@
+# Normalise line endings for text, but never touch binaries.
+#
+# core.autocrlf=true on Windows rewrites LF to CRLF on checkout for anything
+# git believes is text. Git guesses by looking for a NUL byte in the first 8 KB,
+# and some PDFs have none in that window -- they get misclassified as text and
+# are silently corrupted on clone. The rules below settle it explicitly.
+
+* text=auto
+
+# Documents
+*.pdf   binary
+*.docx  binary
+*.pptx  binary
+
+# Images
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.tif   binary
+*.tiff  binary
+
+# Model weights and data (gitignored, listed for safety)
+*.pth   binary
+*.pt    binary
+*.npy   binary
+*.npz   binary
+
+# Notebooks: JSON, but diffing them as text is noise
+*.ipynb -text

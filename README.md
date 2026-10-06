@@ -27,6 +27,17 @@ magnitude below the measurement noise floor (0.057).
 
 ---
 
+## Documents
+
+- [**TrustSeg_Report.pdf**](docs/TrustSeg_Report.pdf) — the full technical report:
+  method, experiments, results and limitations.
+- [**TrustSeg_Final_Review.pptx**](docs/TrustSeg_Final_Review.pptx) — the final
+  review presentation.
+- [**Project_Explained_Simply.pdf**](docs/Project_Explained_Simply.pdf) — a
+  plain-language explainer of the whole project, for a non-specialist reader.
+
+---
+
 ## Headline results
 
 | Measurement | Value | Source |
@@ -268,7 +279,7 @@ venv\Scripts\python.exe scripts\find_tumor_slices.py --n 5
 ├── results/                    Result CSVs and figures (checkpoints gitignored)
 ├── tests/test_pipeline.py      Unit tests
 ├── notebooks/colab_train.ipynb Colab training notebook
-└── docs/                       Project report (added separately)
+└── docs/                       Report, presentation, plain-language explainer
 ```
 
 ---
