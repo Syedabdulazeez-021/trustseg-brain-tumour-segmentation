@@ -1,0 +1,50 @@
+# ---------------------------------------------------------------------------
+# Environments
+# ---------------------------------------------------------------------------
+venv/
+.venv/
+env/
+
+# ---------------------------------------------------------------------------
+# Dataset - 1 GB, not redistributed. See README for the download link.
+# ---------------------------------------------------------------------------
+kaggle_3m/
+lgg-mri-segmentation/
+
+# Sample MRI slices extracted from the dataset. Kept locally so the demo can
+# be run offline, but they are dataset imagery and are not redistributed here.
+verify_samples/
+
+# ---------------------------------------------------------------------------
+# Model checkpoints - 2.33 GB across 25 files. Regenerate with scripts/train.py
+# and scripts/learning_curve.py (see README, "Reproducing the results").
+# ---------------------------------------------------------------------------
+*.pth
+*.pt
+*.ckpt
+results/lc/
+
+# Learning-curve subset splits: 15 CSVs that regenerate identically because
+# the seeds are fixed in scripts/learning_curve.py.
+splits/lc/
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# ---------------------------------------------------------------------------
+# Tooling / OS
+# ---------------------------------------------------------------------------
+.streamlit/
+*.log
+streamlit_log.txt
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,41 @@
+# TrustSeg - brain tumour segmentation with test-time-augmentation uncertainty
+#
+# Pinned to the versions this project was developed and measured against.
+# Install into a fresh virtual environment:
+#
+#     python -m venv venv
+#     venv\Scripts\python.exe -m pip install -r requirements.txt     (Windows)
+#     ./venv/bin/python -m pip install -r requirements.txt           (Linux/macOS)
+#
+# NOTE ON TORCH: the pins below are the CUDA 12.6 builds. `pip install torch`
+# alone gives you the CPU build, which runs everything here correctly but
+# slowly. For GPU, install torch/torchvision from the PyTorch index first:
+#
+#     pip install torch==2.12.1 torchvision==0.27.1 \
+#         --index-url https://download.pytorch.org/whl/cu126
+#
+# then run the install above for the rest.
+
+# --- deep learning ---
+torch==2.12.1
+torchvision==0.27.1
+segmentation-models-pytorch==0.5.0
+
+# --- imaging / augmentation ---
+opencv-python==4.13.0.92
+albumentations==2.0.8
+pillow==12.3.0
+
+# --- numerics / data ---
+numpy==2.5.0
+pandas==3.0.3
+scipy==1.18.0
+scikit-learn==1.9.0
+
+# --- plotting / config / progress ---
+matplotlib==3.11.0
+PyYAML==6.0.3
+tqdm==4.68.3
+
+# --- demo ---
+streamlit==1.58.0

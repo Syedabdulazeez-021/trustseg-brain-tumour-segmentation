@@ -1,0 +1,37 @@
+# ============================================================================
+# Central configuration for the Brain Tumour Segmentation project.
+# Edit values here instead of hunting through the code.
+# ============================================================================
+
+# --- Data ---
+data:
+  # Root of the extracted Kaggle dataset. After download+unzip this folder
+  # should contain "kaggle_3m/" with the 110 patient sub-folders.
+  raw_root: "lgg-mri-segmentation/kaggle_3m"
+  # Where prepare_data.py writes the patient-level split CSV.
+  split_csv: "data/split.csv"
+  image_size: 256                 # images & masks resized to 256x256
+  # Patient-level split counts (110 patients total).
+  n_train_patients: 80
+  n_val_patients: 15
+  n_test_patients: 15
+  seed: 42
+
+# --- Model ---
+model:
+  encoder_name: "resnet34"
+  encoder_weights: "imagenet"     # set to null for from-scratch baseline
+  in_channels: 3
+  classes: 1
+
+# --- Training ---
+train:
+  batch_size: 16                  # drop to 8 if you hit a GPU OOM error
+  epochs: 50
+  learning_rate: 0.0001           # 1e-4
+  scheduler_patience: 5
+  scheduler_factor: 0.5
+  early_stopping_patience: 10
+  num_workers: 2
+  results_dir: "results"
+  best_model_path: "results/best_model.pth"
