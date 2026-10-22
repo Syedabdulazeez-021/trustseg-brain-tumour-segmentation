@@ -62,6 +62,28 @@ trained on fewer patients, not by the scanner. No per-site *p* value reaches
 significance (0.21–0.78). With this cohort size, the honest conclusion is that the
 experiment **cannot detect** site effects, not that none exist.
 
+### Segmentation metrics (held-out test set)
+
+Precision, recall and F1 decompose the Dice score for the evaluation rubric.
+Computed on the 279 tumour-bearing test slices with `scripts/compute_metrics.py`.
+
+| Metric (tumour-bearing slices, macro) | Value | Source |
+|---|---:|---|
+| Precision | 0.856 | `results/metrics_random.csv` |
+| Recall / sensitivity | 0.811 | `results/metrics_random.csv` |
+| F1 / Dice | 0.818 | `results/metrics_random.csv` |
+| IoU (Jaccard) | 0.736 | `results/metrics_random.csv` |
+| Slice-level detection F1 | 0.967 | `results/metrics_random.csv` |
+
+Pixel accuracy is **0.993**, but that figure is inflated by class imbalance —
+almost every pixel in a brain slice is background, so accuracy sits near 1.0
+regardless of how well the tumour is outlined. Read Dice/IoU instead.
+
+Slice-level detection recall is **0.950**, i.e. **5.0% (14 of 279) of
+tumour-bearing slices are missed entirely** under a single forward pass. (The
+8-view average the demo runs leaves 6.1% empty — a different, TTA-based measure;
+see *Known limitations*.)
+
 ### Figures
 
 | File | Shows |
@@ -70,6 +92,7 @@ experiment **cannot detect** site effects, not that none exist.
 | `results/curve_vs_crosssite.png` | Cross-site drops against the learning curve — the core argument |
 | `results/uncertainty_random_retention.png` | Dice vs. % referred to a radiologist |
 | `results/uncertainty_random_examples.png` | Qualitative overlays with uncertainty maps |
+| `results/confusion_matrix_random.png` | Pixel- and slice-level confusion matrices (held-out test set) |
 | `results/curves_*.png` | Training curves per experiment arm (9 arms) |
 
 ---
@@ -241,6 +264,16 @@ Eight-pass TTA over the test set. Writes
 confidence bands), `results/uncertainty_random_retention.png`, and
 `results/uncertainty_random_examples.png`. Add `--tag DU` etc. for other arms.
 
+### 8 — Classification-style metrics (precision / recall / F1)
+
+```bat
+venv\Scripts\python.exe scripts\compute_metrics.py --tag random
+```
+Pools the held-out test set into pixel-level and slice-level confusion matrices
+and reports precision, recall, F1/Dice, IoU, specificity and accuracy. Writes
+`results/metrics_random.csv`, `results/metrics_random_per_slice.csv` and
+`results/confusion_matrix_random.png`.
+
 ### Optional — single-model evaluation and sample extraction
 
 ```bat
@@ -270,6 +303,7 @@ venv\Scripts\python.exe scripts\find_tumor_slices.py --n 5
 │   ├── evaluate_domain_shift.py  Per-arm Dice + paired site/volume effects
 │   ├── analyze_learning_curve.py Curve fit vs. cross-site residuals
 │   ├── uncertainty.py          8-pass TTA uncertainty + retention curve
+│   ├── compute_metrics.py      Precision/recall/F1 + confusion matrices (rubric metrics)
 │   ├── find_tumor_slices.py    Extract demo slices from the dataset
 │   └── smoke_test.py           13-check pre-flight for the demo
 ├── data/
@@ -289,14 +323,14 @@ venv\Scripts\python.exe scripts\find_tumor_slices.py --n 5
 Stated plainly, because a model that reports its own confidence should not overstate
 its own competence.
 
-**1. A ~5% silent miss rate that the uncertainty score cannot catch.**
-On 224 tumour-bearing slices, 9.8% produce a completely empty mask. Just over half
-are correctly flagged — the eight views split, instability runs 0.14–0.75, and the
-demo reports HIGH RISK — POSSIBLE MISSED FINDING. But the remaining **~5% are missed
-with all eight views in unanimous agreement** (instability 0.000), including one
-slice with a 2,897-pixel tumour. TTA measures *disagreement*; it is blind by
-construction to a model that is uniformly wrong. Unanimity is not evidence of
-absence.
+**1. A ~4% silent miss rate that the uncertainty score cannot catch.**
+On 279 tumour-bearing slices, 6.1% (17 slices) produce a completely empty mask. Six
+are correctly flagged — the eight views split, instability runs 0.25–0.59, and the
+demo reports HIGH RISK — POSSIBLE MISSED FINDING. But the remaining **11 (~4% of all
+tumour-bearing slices) are missed with all eight views in unanimous agreement**
+(instability 0.000), the largest a 712-pixel tumour. TTA measures *disagreement*; it
+is blind by construction to a model that is uniformly wrong. Unanimity is not
+evidence of absence.
 
 **2. ~5.5% false-alarm rate on tumour-free slices.**
 Checking uncertainty before predicted area is what fixes limitation 1, and it costs

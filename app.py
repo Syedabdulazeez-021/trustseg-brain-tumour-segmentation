@@ -39,11 +39,12 @@ the averaged probability never crosses 0.5 but the individual views disagree
 violently - the single most uncertain state the model can occupy - the app
 reported a calm "NO TUMOUR DETECTED".
 
-Measured on 224 tumour-bearing slices, 9.8% predict completely empty, and
-half of those sit above the high-risk threshold. The verdict logic below
-therefore branches on uncertainty FIRST, and an empty prediction with high
-disagreement is reported as a possible missed finding, with the number of
-views that did find something shown alongside it.
+Measured on 279 tumour-bearing slices, 6.1% (17 slices) predict completely
+empty under the 8-view average, and 6 of those 17 sit above the high-risk
+disagreement threshold. The verdict logic below therefore branches on
+uncertainty FIRST, and an empty prediction with high disagreement is reported
+as a possible missed finding, with the number of views that did find something
+shown alongside it.
 
 WHAT IT REPORTS
 ---------------
@@ -534,9 +535,9 @@ with tab_evidence:
         "- Trained on 110 patients. The learning curve projects a ceiling "
         "near 0.92 Dice and does not saturate until roughly 96 training "
         "patients, so this model is still data-limited.\n"
-        "- **The blind spot.** About 10% of tumour-bearing slices are "
-        "predicted completely empty. The app red-flags half of them, because "
-        "the views disagree. The other half - roughly 5% of all "
+        "- **The blind spot.** About 6% of tumour-bearing slices (17 of 279) "
+        "are predicted completely empty. The app red-flags 6 of them, because "
+        "the views disagree. The other 11 - roughly 4% of all "
         "tumour-bearing slices - are missed with *zero* disagreement: all 8 "
         "views are unanimously wrong, so there is no signal left to warn "
         "anyone. Disagreement-based uncertainty cannot detect a failure the "
